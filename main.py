@@ -34,6 +34,7 @@ def load_model():
 
 docs = load_doc()
 topic_model = load_model()
+MODEL_NAME = "BERTOPIC_MEDBLAST"
 
 st.title("bert topic")
 
@@ -44,19 +45,45 @@ st.write(topic_model.visualize_topics())
 
 # Visualize hierarchy
 st.subheader("Hierarchy Visualization")
-st.write()
 st.write(topic_model.visualize_hierarchy())
 
 
-st.subheader("barChart")
+st.subheader("barChart Visualization")
 st.write(topic_model.visualize_barchart())
 
-st.subheader("heatMap")
+st.subheader("heatMap Visualization")
 st.write(topic_model.visualize_heatmap())
 
-st.subheader("termRank")
+st.subheader("termRank Visualization")
 st.write(topic_model.visualize_term_rank())
 st.write(topic_model.visualize_term_rank(log_scale=True))
+
+st.subheader("hierarchical_topics Visualization")
+embeddings = np.load(f"{MODEL_NAME}-embedded.npy")
+hierarchical_topics = topic_model.hierarchical_topics(docs)
+topic_model.visualize_hierarchical_documents(
+    docs, hierarchical_topics, embeddings=embeddings
+)
+
+# Reduce dimensionality of embeddings, this step is optional but much faster to perform iteratively:
+reduced_embeddings = UMAP(
+    n_neighbors=10, n_components=2, min_dist=0.0, metric="cosine"
+).fit_transform(embeddings)
+st.write(
+    topic_model.visualize_hierarchical_documents(
+        docs, hierarchical_topics, reduced_embeddings=reduced_embeddings
+    )
+)
+
+# st.subheader("Mat Visualization")
+# topic_distr, topic_token_distr = topic_model.approximate_distribution(
+#     docs, calculate_tokens=True
+# )
+
+# # Visualize the token-level distributions
+# df = topic_model.visualize_approximate_distribution(docs[1], topic_token_distr[1])
+# st.write(df)
+
 # # Visualize documents
 # st.subheader("Documents Visualization")
 # visualize_documents(df["Title_Abstract"].astype(str), topic_model, embeddings=None)
