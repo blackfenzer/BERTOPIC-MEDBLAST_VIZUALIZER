@@ -32,8 +32,16 @@ def load_model():
     return topic_model
 
 
+@st.cache_data
+def load_embed():
+    MODEL_NAME = "BERTOPIC_MEDBLAST"
+    embeddings = np.load(f"{MODEL_NAME}-embedded.npy")
+    return embeddings
+
+
 docs = load_doc()
 topic_model = load_model()
+embeddings = load_embed()
 MODEL_NAME = "BERTOPIC_MEDBLAST"
 
 st.title("bert topic")
@@ -59,7 +67,6 @@ st.write(topic_model.visualize_term_rank())
 st.write(topic_model.visualize_term_rank(log_scale=True))
 
 st.subheader("hierarchical_topics Visualization")
-embeddings = np.load(f"{MODEL_NAME}-embedded.npy")
 hierarchical_topics = topic_model.hierarchical_topics(docs)
 topic_model.visualize_hierarchical_documents(
     docs, hierarchical_topics, embeddings=embeddings
