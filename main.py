@@ -66,20 +66,20 @@ st.subheader("termRank Visualization")
 st.write(topic_model.visualize_term_rank())
 st.write(topic_model.visualize_term_rank(log_scale=True))
 
-st.subheader("hierarchical_topics Visualization")
-hierarchical_topics = topic_model.hierarchical_topics(docs)
-topic_model.visualize_hierarchical_documents(
-    docs, hierarchical_topics, embeddings=embeddings
-)
-# Reduce dimensionality of embeddings, this step is optional but much faster to perform iteratively:
-reduced_embeddings = UMAP(
-    n_neighbors=10, n_components=2, min_dist=0.0, metric="cosine"
-).fit_transform(embeddings)
-st.write(
-    topic_model.visualize_hierarchical_documents(
-        docs, hierarchical_topics, reduced_embeddings=reduced_embeddings
-    )
-)
+# st.subheader("hierarchical_topics Visualization")
+# hierarchical_topics = topic_model.hierarchical_topics(docs)
+# topic_model.visualize_hierarchical_documents(
+#     docs, hierarchical_topics, embeddings=embeddings
+# )
+# # Reduce dimensionality of embeddings, this step is optional but much faster to perform iteratively:
+# reduced_embeddings = UMAP(
+#     n_neighbors=10, n_components=2, min_dist=0.0, metric="cosine"
+# ).fit_transform(embeddings)
+# st.write(
+#     topic_model.visualize_hierarchical_documents(
+#         docs, hierarchical_topics, reduced_embeddings=reduced_embeddings
+#     )
+# )
 
 
 # st.subheader("Mat Visualization")
